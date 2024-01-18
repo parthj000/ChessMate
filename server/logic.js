@@ -1,5 +1,5 @@
 const hash1 = ["a", "b", "c", "d", "e", "f", "g", "h"];
-console.log("this is coo;");
+console.log("thiehdih");
 
 /******
  *
