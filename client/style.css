@@ -1,0 +1,26 @@
+.container{
+    display:grid;
+    grid-template-columns: repeat(8,80px);
+    grid-template-rows:repeat(8,80px);
+    border-style:solid;
+    border-width:1px;
+    width: 640px;
+    cursor:grab;
+   
+}
+
+.box{
+    transition: all 0.15s;
+    
+}
+
+
+.box:hover{
+    transform:scale(0.9);
+}
+.box:active{
+    cursor:grabbing;
+}
+
+
+

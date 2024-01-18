@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+
+
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <meta http-equiv='X-UA-Compatible' content='ie=edge'>
+    <title>prac</title>
+    <link rel='stylesheet' href='style.css'>
+</head>
+
+<body>
+    <div class="container" id="container">
+
+
+
+
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    
+    
+    <script>
+       
+        
+        function load() {
+
+            var row = 8;
+            var column = 0;
+            var hash = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
+            var color = "black"
+
+
+            for (let i = 0; i < 8; i++) {
+                for (let i = 0; i < 8; i++) {
+                    const newElement = document.createElement("div");
+
+                    newElement.style.alignItems = "center";
+                    
+                    newElement.className = "box";
+                    newElement.style.backgroundImage = "none";
+                    
+                    newElement.id = `${hash[column]}${row}`;
+
+                    if (color == "white") {
+                        color = "black";
+
+                    }
+                    else {
+                        color = "white";
+
+
+                    }
+                    
+
+                    newElement.style.backgroundColor = color;
+                    const doc = document.getElementById("container");
+
+                    doc.append(newElement);
+
+
+
+
+
+                   
+                    column = column + 1;
+
+                }
+                if (color == "white") color = "black";
+                else color = "white";
+                column = 0;
+                row = row - 1;
+
+            }
+
+
+
+
+        }
+        load();
+
+        // positions
+        const white = {
+            pawn: ["a2", "b2", "c2", "d2", "e2", "f2", "g2", "h2"],
+            rook: ["h1", "a1"],
+            knight: ["b1", "g1"],
+            bishop: ["c1", "f1"],
+            queen: ["d1"],
+            king: ["e1"]
+        }
+        const black = {
+            pawn: ["a7", "b7", "c7", "d7", "e7", "f7", "g7", "h7"],
+            rook: ["h8", "a8"],
+            knight: ["b8", "g8"],
+            bishop: ["c8", "f8"],
+            queen: ["d8"],
+            king: ["e8"]
+        }
+
+
+        for (let obj in white) {
+            for (let key of white[obj]) {
+                //agar khali obj rakhta hu toh vo obj ko as string le raha hain pichili bar hamne different kiya tha 
+                // array of different objects
+
+                if (obj == "pawn") {
+
+                    document.getElementById(key).style.backgroundImage = 'url("pic2.png")',
+                    document.getElementById(key).style.backgroundSize = "contain";
+                    document.getElementById(key).classList.add("whitepawn")
+                }
+                else if (obj == "rook") {
+                    
+                    document.getElementById(key).style.backgroundImage = 'url("rook.png")';
+                    document.getElementById(key).style.backgroundSize = "contain";
+                    document.getElementById(key).classList.add("rook")
+                }
+                else if (obj == "knight") {
+                    document.getElementById(key).style.backgroundImage = 'url("knight.png")';
+                    document.getElementById(key).style.backgroundSize = "contain";
+                    document.getElementById(key).classList.add("knight")
+
+                }
+                else if (obj == "bishop") {
+                    document.getElementById(key).style.backgroundImage = 'url("bishop.png")';
+                    document.getElementById(key).style.backgroundSize = "contain";
+                    document.getElementById(key).classList.add("bishop")
+                }
+                else if (obj == "queen") {
+
+                    document.getElementById(key).style.backgroundImage = 'url("queen.png")';
+                    document.getElementById(key).style.backgroundSize = "contain";
+                    document.getElementById(key).classList.add("queen")
+
+                }
+                else if (obj == "king") {
+                    document.getElementById(key).style.backgroundImage = 'url("king.png")';
+                    document.getElementById(key).style.backgroundSize = "contain";
+                    document.getElementById(key).classList.add("king");
+
+                }
+
+            }
+        }
+
+        for (let obj in black) {
+            for (let key of black[obj]) {
+                //agar khali obj rakhta hu toh vo obj ko as string le raha hain pichili bar hamne different kiya tha 
+                // array of different objects
+
+                if (obj == "pawn") {
+
+                    document.getElementById(key).style.backgroundImage = 'url("pic2.png")',
+                        document.getElementById(key).style.backgroundSize = "contain";
+                        document.getElementById(key).classList.add("blackpawn")
+                }
+                else if (obj == "rook") {
+                    
+                    document.getElementById(key).style.backgroundImage = 'url("rook.png")';
+                    document.getElementById(key).style.backgroundSize = "contain";
+                    document.getElementById(key).classList.add("rook")
+                }
+                else if (obj == "knight") {
+                    document.getElementById(key).style.backgroundImage = 'url("knight.png")';
+                    document.getElementById(key).style.backgroundSize = "contain";
+                    document.getElementById(key).classList.add("knight")
+
+                }
+                else if (obj == "bishop") {
+                    document.getElementById(key).style.backgroundImage = 'url("bishop.png")';
+                    document.getElementById(key).style.backgroundSize = "contain";
+                    document.getElementById(key).classList.add("bishop")
+                    
+                }
+                else if (obj == "queen") {
+
+                    document.getElementById(key).style.backgroundImage = 'url("queen.png")';
+                    document.getElementById(key).style.backgroundSize = "contain";
+                    document.getElementById(key).classList.add("queen")
+
+
+                }
+                else if (obj == "king") {
+                    document.getElementById(key).style.backgroundImage = 'url("king.png")';
+                    document.getElementById(key).style.backgroundSize = "contain";
+                    document.getElementById(key).classList.add("king")
+
+                }
+
+            }
+        }
+
+
+
+
+
+
+
+
+
+    </script>
+    <script src="./socketClient.js"></script>
+</body>
+
+</html>
