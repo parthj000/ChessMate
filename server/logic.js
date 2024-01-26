@@ -1,25 +1,9 @@
 const hash1 = ["a", "b", "c", "d", "e", "f", "g", "h"];
-console.log("thiehdih");
 
-/******
- *
- * movePrediction(power,boxIndex);
- * param1 :
- *
- *
- */
-
-function movePrediction(power, boxIndex) {
-  const box = boxIndex.split("");
-  // starting condition
-  var x = box[0];
-  var y = box[1];
-
-  /******
-   *
-   * function to change the datatypes of x and y
-   *
-   */
+function movePrediction(power, boxIndex, race) {
+  var y = boxIndex.split("")[1];
+  var x = boxIndex.split("")[0];
+  var moves = [];
 
   y = Number(y);
   for (let i = 0; i < 8; i++) {
@@ -30,97 +14,137 @@ function movePrediction(power, boxIndex) {
     }
   }
 
-  if (power == "blackpawn" || power == "whitepawn") {
-    /****
-     *
-     * to change the push
-     *
-     *
-     */
-
-    const moves = [];
-
-    if (y == 7 && power == "blackpawn") {
-      // b2 to b4 or b2 is first position
-      console.log("hii");
-      moves.push(`${hash1[x]}6`);
-      moves.push(`${hash1[x]}5`);
-
-      return moves;
-    } else if (y == 2 && power == "whitepawn") {
-      console.log("hii");
-      moves.push(`${hash1[x]}3`);
-      moves.push(`${hash1[x]}4`);
-      return moves;
-    }
-
-    moves.push(`${hash1[x + 1]}${y + 1}`);
-    moves.push(`${hash1[x - 1]}${y + 1}`);
-    moves.push(`${x}${y + 1}`);
-
-    console.log(moves);
-    return moves;
-  } else if (power == "rook") {
-    return rookLogic(x, y);
-  } else if (power == "bishop") {
-    return bishopLogic(x, y);
-  } else if (power == "knight") {
-    return knightLogic(x, y);
-  } else if (power == "queen") {
-    return queenLogic(x, y);
+  if (power === "bishop") {
+    moves.push(bishopLogic1(x, y)[0]);
+    moves.push(bishopLogic1(x, y)[1]);
+    moves.push(bishopLogic3(x, y)[1]);
+    moves.push(bishopLogic3(x, y)[0]);
+  } else if (power === "rook") {
+    moves.push(rook1(x, y)[0]);
+    moves.push(rook1(x, y)[1]);
+    moves.push(rook3(x, y)[1]);
+    moves.push(rook3(x, y)[0]);
+  } else if (power === "queen") {
+    moves.push(rook1(x, y)[0]);
+    moves.push(rook1(x, y)[1]);
+    moves.push(rook3(x, y)[1]);
+    moves.push(rook3(x, y)[0]);
+    moves.push(bishopLogic1(x, y)[0]);
+    moves.push(bishopLogic1(x, y)[1]);
+    moves.push(bishopLogic3(x, y)[1]);
+    moves.push(bishopLogic3(x, y)[0]);
+  } else if (power === "knight") {
+    moves.push(knightLogic(x, y));
+  } else if (power == "pawn") {
+    moves.push(pawnLogic(x, y, race));
+  } else {
+    moves.push(kingLogic(x, y));
   }
-}
-
-function rookLogic(x, y) {
-  const moves = [];
-  for (let i = 0; i < 8; i++) {
-    moves.push(`${hash1[i]}${y}`);
-  }
-  for (let i = 0; i < 8; i++) {
-    moves.push(`${hash1[x]}${i + 1}`);
-  }
-  console.log(moves);
+  console.log(moves, "--------moves");
   return moves;
 }
 
-function bishopLogic(x, y) {
-  const moves = [];
+function bishopLogic1(x, y) {
+  const diagonalone = [];
+  const diagonaltwo = [];
+
   //a linear equation we make
   // y-x=x+y;
   //here x ko ham 0 se 8 tak lejayenge or apne aap limitations khatam hojaengi
 
-  for (let i = 0; i < 8; i++) {
+  for (let i = x + 1; i < 8; i++) {
     //this is x actually i from a to h;
+
     const k = y - x;
     const newY = i + k;
 
-    // console.log(k, newY);
-    if (newY >= 1 && newY <= 8) {
-      moves.push(`${hash1[i]}${newY}`);
+    if (newY < 1 || newY > 8) {
+      break;
     }
-    console.log("hi", moves);
-  }
-  /****
-   *
-   * now discuss the downfalling graph with slope -1;
-   */
-  for (let i = 0; i < 8; i++) {
-    const k = x + y;
-    const newY = k - i; //the eq is y=k-x
-    console.log(newY, k, "---------------------------------------------------");
-    if (newY >= 1 && newY <= 8) {
-      moves.push(`${hash1[i]}${newY}`);
-    }
-    console.log("hi", moves);
+    diagonalone.push(`${hash1[i]}${newY}`);
   }
 
-  return moves;
+  for (let i = x - 1; i >= 0; i--) {
+    //this is x actually i from a to h;
+
+    const k = y - x;
+    const newY = i + k;
+
+    if (newY < 1 || newY > 8) {
+      break;
+    }
+    let id = `${hash1[i]}${newY}`;
+
+    diagonaltwo.push(id);
+  }
+  return [diagonalone, diagonaltwo];
 }
-/*****
+
+/*********
  *
  *
  *
- * the knight logic
+ *
+ *
+ *
+ */
+function bishopLogic3(x, y) {
+  const diagonalthree = [];
+  const diagonalfour = [];
+
+  for (let i = x + 1; i < 8; i++) {
+    const k = x + y;
+    const newY = k - i; //the eq is y=k-x
+    if (newY < 1 || newY > 8) {
+      break;
+    }
+
+    diagonalthree.push(`${hash1[i]}${newY}`);
+  }
+
+  for (let i = x - 1; i >= 0; i--) {
+    const k = x + y;
+    const newY = k - i; //the eq is y=k-x
+    if (newY < 1 || newY > 8) {
+      break;
+    }
+
+    diagonalfour.push(`${hash1[i]}${newY}`);
+  }
+  return [diagonalthree, diagonalfour];
+}
+
+function rook1(x, y) {
+  const straightone = [];
+  const straighttwo = [];
+
+  for (let i = x + 1; i < 8; i++) {
+    straightone.push(`${hash1[i]}${y}`);
+  }
+  for (let i = x - 1; i >= 0; i--) {
+    straighttwo.push(`${hash1[i]}${y}`);
+  }
+
+  return [straightone, straighttwo];
+}
+
+function rook3(x, y) {
+  const straightthree = [];
+  const straightfour = [];
+
+  for (let i = y + 1; i <= 8; i++) {
+    straightthree.push(`${hash1[x]}${i}`);
+  }
+  for (let i = y - 1; i > 0; i--) {
+    straightfour.push(`${hash1[x]}${i}`);
+  }
+  return [straightthree, straightfour];
+}
+
+/*******
+ *
+ *
+ *
  */
 function knightLogic(x, y) {
   const moves = [];
@@ -144,7 +168,6 @@ function knightLogic(x, y) {
       }
     }
   }
-  console.log(moves, "-----knight");
 
   for (let i = 0; i < 2; i++) {
     if (xCol[i] <= 7 && xCol[i] >= 0) {
@@ -161,21 +184,62 @@ function knightLogic(x, y) {
       }
     }
   }
-  console.log(moves);
+  console.log(moves, "knight--------------------moves");
 
   return moves;
 }
-/****
- *
- *
- *
- * **
- * queen logic
- */
-function queenLogic(x, y) {
-  const bishop = bishopLogic(x, y);
-  const rook = rookLogic(x, y);
-  const queen = bishop.concat(rook);
-  return queen;
+
+function pawnLogic(x, y, race) {
+  const moves = [];
+  if (race == "white") {
+    if (y == 2) {
+      moves.push(`${hash1[x]}${y + 1}`);
+      moves.push(`${hash1[x]}${y + 2}`);
+      if (x - 1 >= 0 && y + 1 <= 8) moves.push(`${hash1[x - 1]}${y + 1}`);
+      if (x + 1 < 8 && y + 1 <= 8) moves.push(`${hash1[x + 1]}${y + 1}`);
+
+      return moves;
+    }
+    moves.push(`${hash1[x]}${y + 1}`);
+    console.log(x - 1, y + 1);
+    if (x - 1 >= 0 && y + 1 <= 8) moves.push(`${hash1[x - 1]}${y + 1}`);
+    if (x + 1 < 8 && y + 1 <= 8) moves.push(`${hash1[x + 1]}${y + 1}`);
+    return moves;
+  }
+  if (y == 7) {
+    moves.push(`${hash1[x]}${y - 1}`);
+    moves.push(`${hash1[x]}${y - 2}`);
+    if (x + 1 < 8 && y - 1 > 0) moves.push(`${hash1[x + 1]}${y - 1}`);
+    if (x - 1 >= 0 && y - 1 > 0) moves.push(`${hash1[x - 1]}${y - 1}`);
+
+    return moves;
+  }
+  moves.push(`${hash1[x]}${y - 1}`);
+  if (x + 1 < 8 && y - 1 > 0) moves.push(`${hash1[x + 1]}${y - 1}`);
+  if (x - 1 >= 0 && y - 1 > 0) moves.push(`${hash1[x - 1]}${y - 1}`);
+  return moves;
 }
+
+function kingLogic(x, y) {
+  const cases = [
+    [x + 1, y + 1],
+    [x, y + 1],
+    [x - 1, y + 1],
+    [x - 1, y],
+    [x + 1, y],
+    [x - 1, y - 1],
+
+    [x, y - 1],
+    [x + 1, y - 1],
+  ];
+  const moves = [];
+  for (let mini of cases) {
+    if (mini[0] >= 0 && mini[0] < 8 && mini[1] >= 1 && mini[1] <= 8) {
+      moves.push(`${hash1[mini[0]]}${mini[1]}`);
+    }
+  }
+  console.log(moves, "------------oip");
+  return moves;
+}
+
 export { movePrediction };
