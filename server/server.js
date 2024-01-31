@@ -2,7 +2,7 @@ import express from "express";
 import { Server } from "socket.io";
 import http from "http";
 import { movePrediction } from "./logic.js";
-import { connectDb } from "./mongoose.js";
+
 import cookieParser from "cookie-parser";
 import path from "path";
 const app = express();
@@ -10,8 +10,6 @@ const server = http.createServer(app);
 const io = new Server(server);
 var race;
 var roomId;
-
-connectDb();
 
 io.on("connection", (socket) => {
   socket.on("join-room", (roomId) => {
